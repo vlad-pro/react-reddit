@@ -1,0 +1,12 @@
+.DS_Store
+.thumbs.db
+node_modules
+data
+dist
+
+# related dirs
+/dist
+
+
+# Editor files
+.vscode
