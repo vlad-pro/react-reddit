@@ -35,3 +35,4 @@
     "./src/**/*.ts"
   ]
 }
+// you can get this thing with a nifty package via npx tsconfig.json
