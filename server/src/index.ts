@@ -20,7 +20,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver],
       validate: false,
     }),
-    context: () => ({ em: orm.em }),
+    context: () => ({ em: orm.em }), // This opens the contex to other operations and functions to use ORM connection. We got the em type and created MyContext in types.ts
   });
 
   apolloServer.applyMiddleware({ app });
