@@ -55,6 +55,7 @@ export class PostResolver {
     @Arg("id", () => Int) id: number,
     @Ctx() ctx: MyContext
   ): Promise<boolean> {
+    // The try/catch construct is unnesesary here and right now it does not even work  - it's always true for some reason
     try {
       await ctx.em.nativeDelete(Post, { id });
     } catch {
