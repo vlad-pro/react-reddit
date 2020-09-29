@@ -36,7 +36,7 @@ class FieldError {
 // User and errors fields are both optional and nullable. Can be done with TS Union
 @ObjectType()
 class UserResponse {
-  @Field((returns) => [FieldError], { nullable: true })
+  @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
   @Field(() => User, { nullable: true })
@@ -95,7 +95,7 @@ export class UserResolver {
     return { user };
   }
 
-  @Mutation((returns) => UserResponse)
+  @Mutation(() => UserResponse)
   async login(
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() ctx: MyContext
