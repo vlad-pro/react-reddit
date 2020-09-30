@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  
+  db:
+    container_name: pg-docker
+    environment:
+      - POSTGRES_PASSWORD=docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - "/Users/vproskurin/work/js_Projects/learning/react/react-reddit/server/data:/var/lib/postgresql/data"
+    image: postgres
+
+  redis:
+    ports:
+      - "6379:6379"
+    volumes:
+      - "/Users/vproskurin/work/js_Projects/learning/react/react-reddit/server/rds:/data"
+    container_name: rds-docker
+    image: redis
