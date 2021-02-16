@@ -122,6 +122,6 @@ export class UserResolver {
         ],
       };
     }
-    return { user }; // return user object, no errors. This satisfies the return type.
+    return { user, }; // return user object, no errors. This satisfies the return type.
   }
 }

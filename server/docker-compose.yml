@@ -8,13 +8,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - "/Users/vproskurin/work/js_Projects/learning/react/react-reddit/server/data:/var/lib/postgresql/data"
-    image: postgres
+      - "./data:/var/lib/postgresql/data"
+    image: postgres:12
 
   redis:
     ports:
       - "6379:6379"
     volumes:
-      - "/Users/vproskurin/work/js_Projects/learning/react/react-reddit/server/rds:/data"
+      - "./rds:/data"
     container_name: rds-docker
     image: redis
