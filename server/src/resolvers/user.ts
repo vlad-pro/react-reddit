@@ -122,6 +122,8 @@ export class UserResolver {
         ],
       };
     }
-    return { user, }; // return user object, no errors. This satisfies the return type.
+    ctx.req.session.userId = user.id // by adding Express Session in types.ts for request we got session object to be always defined 
+    // OR we can use ctx.req.session!.userId = user.id to say that session object will be defined.
+    return { user }; // return user object, no errors. This satisfies the return type.
   }
 }
