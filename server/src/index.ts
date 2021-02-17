@@ -38,7 +38,7 @@ const main = async () => {
         sameSite: "lax", // csrf
         secure: __prod__, // cookie only works in https
       },
-      saveUninitialized: false, // create sessions even if it's empty. But we do not need it.
+      saveUninitialized: false, // create sessions even if it's empty. But we do not need empty sessions.
       secret: "youwillneverguess",
       resave: false,
     })

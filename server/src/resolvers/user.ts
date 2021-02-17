@@ -7,6 +7,7 @@ import {
   InputType,
   Mutation,
   ObjectType,
+  Query,
   // Query,
   Resolver,
   UseMiddleware,
@@ -45,6 +46,16 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  // a helper-testing query to check if the user is logged in or not
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() ctx: MyContext) {
+    if (!ctx.req.session.userId) {
+      return null; // you are not logged in
+    }
+    const user = await ctx.em.findOne(User, { id: ctx.req.session.userId });
+    return user;
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput,
@@ -92,6 +103,10 @@ export class UserResolver {
       }
       // console.log("message: ", err)
     }
+    // loggin in a user by giving a cookie at the end of the registration.
+    // store userId session 
+    // this will set a cookie on the user and keep them logged in
+    ctx.req.session.userId = user.id; 
     return { user };
   }
 
@@ -122,7 +137,7 @@ export class UserResolver {
         ],
       };
     }
-    ctx.req.session.userId = user.id // by adding Express Session in types.ts for request we got session object to be always defined 
+    ctx.req.session.userId = user.id; // by adding Express Session in types.ts for request we got session object to be always defined
     // OR we can use ctx.req.session!.userId = user.id to say that session object will be defined.
     return { user }; // return user object, no errors. This satisfies the return type.
   }
