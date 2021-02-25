@@ -13,6 +13,7 @@ import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { MyContext } from "./types";
+import cors from "cors";
 
 const main = async () => {
   const orm = await MikroORM.init(microConfig);
@@ -22,6 +23,12 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true, 
+    })
+  );
 
   // order is important here  - we are going to put session inside of a apollo server
   // so it shoudl be available BEFORE the Appolo middleware because we will use it there
@@ -49,7 +56,8 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    context: ({ req, res }) => ({ em: orm.em, req, res }),
+    // because types are slightly different we neeed to remove the interface
     // This opens the contex to other operations and functions to use ORM connection.
     // We got the em type and created MyContext in types.ts.
     // UPD: got the req and res objects in the context so we can access the session in the resolver
@@ -57,7 +65,7 @@ const main = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: { origin: "http://localhost:3000" },
+    cors: false,
   });
 
   // This is a test for express. It's a REST api test but we are using GQL in here so it's commented
