@@ -15,7 +15,7 @@ type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
-  size: _,
+  size: _, // this is for Input element, there is a type mismatch. We are destructuring props and making sure the size is not there.
   ...props
 }) => {
   const [field, { error }] = useField(props);

@@ -23,7 +23,7 @@ const main = async () => {
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
 
-  // order is important here  - we are going to put session inside of a apollo server 
+  // order is important here  - we are going to put session inside of a apollo server
   // so it shoudl be available BEFORE the Appolo middleware because we will use it there
   app.use(
     session({
@@ -49,13 +49,16 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }), 
+    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
     // This opens the contex to other operations and functions to use ORM connection.
     // We got the em type and created MyContext in types.ts.
     // UPD: got the req and res objects in the context so we can access the session in the resolver
   });
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: { origin: "http://localhost:3000" },
+  });
 
   // This is a test for express. It's a REST api test but we are using GQL in here so it's commented
   // app.get("/", (_, res) => { // to ignore the request (req) we are using an underscore, looks like go/python
