@@ -10,31 +10,23 @@ import {
 } from "@chakra-ui/react";
 import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
-import { useMutation } from "urql";
+import { useRegisterMutation } from "../generated/graphql";
 
 interface registerProps {}
 
-const REGISTER_MUTATION = `
-mutation Register($username: String!, $password: String!) {
-  register(options: { username: $username, password: $password }) {
-    user {
-      createdAt
-      id
-      updatedAt
-      username
-    }
-  }
-}
-`;
-
 const Register: React.FC<registerProps> = ({}) => {
-  const [, register] = useMutation(REGISTER_MUTATION);
+  // this is from the generated file by graphql-codegen
+  // We introduced new flow with that:
+  // first we write queries in src/graphql
+  // then we autogenerate the code with graphql-codegen which was installed from here
+  // https://github.com/dotansimha/graphql-code-generator
+  const [, register] = useRegisterMutation();
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: "", password: "" }}
-        onSubmit={(values) => {
-          return register(values); // returning a Promise finishes submitting
+        onSubmit={async (values) => {
+          const response = await register(values); // returning a Promise finishes submitting
         }}
       >
         {({ isSubmitting }) => (
